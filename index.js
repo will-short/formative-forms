@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const csurf = require("csurf");
 const cookieParser = require("cookie-parser");
+const { createErrors } = require("./create-errors");
 
 const port = process.env.PORT || 3000;
 
@@ -32,20 +33,14 @@ app.get("/create", csrfProtection, function (req, res) {
   res.render("create", { csrfToken: req.csrfToken(), errors });
 });
 
-app.post("/create", csrfProtection, (req, res) => {
+app.post("/create", csrfProtection, createErrors, (req, res) => {
   let form = req.body;
-  let errors = [];
-
-  if (!form.firstName) errors.push("Please provide a first name.");
-  if (!form.lastName) errors.push("Please provide a last name.");
-  if (!form.email) errors.push("Please provide an email.");
-  if (!form.password) errors.push("Please provide a password.");
-  if (form.password !== form.confirmedPassword)
-    errors.push(
-      "The provided values for the password and password confirmation fields did not match."
-    );
-  if (errors.length)
-    res.render("create", { csrfToken: req.csrfToken(), errors, form });
+  if (req.errors.length)
+    res.render("create", {
+      csrfToken: req.csrfToken(),
+      errors: req.errors,
+      form,
+    });
   else {
     users.push({
       id: users[users.length - 1].id + 1,
@@ -62,19 +57,10 @@ app.get("/create-interesting", csrfProtection, function (req, res) {
   res.render("create-interesting", { csrfToken: req.csrfToken(), errors });
 });
 
-app.post("/create-interesting", csrfProtection, (req, res) => {
+app.post("/create-interesting", csrfProtection, createErrors, (req, res) => {
   let form = req.body;
-  let errors = [];
+  let errors = req.errors;
 
-  if (!form.firstName) errors.push("Please provide a first name.");
-  if (!form.lastName) errors.push("Please provide a last name.");
-  if (!form.email) errors.push("Please provide an email.");
-
-  if (!form.password) errors.push("Please provide a password.");
-  if (form.password !== form.confirmedPassword)
-    errors.push(
-      "The provided values for the password and password confirmation fields did not match."
-    );
   if (!form.age) {
     errors.push("age is required");
   } else if (!Number(form.age) || form.age > 120 || form.age < 0) {
