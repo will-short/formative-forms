@@ -1,0 +1,18 @@
+extends layout.pug
+block content
+    include includes/errors.pug
+    form(action="/create-interesting" method="post")
+        include includes/form-inputs.pug
+        label(for="age") Age:
+        input(type="number" name="age" value=form ? form.age : "")
+        label(for="favoriteBeatle") Favorite Beatle:
+        select(name="favoriteBeatle" value=form ? form.favoriteBeatle : "")
+            option(value="") --Please choose an option--
+            option(value="John") John
+            option(value="Paul") Paul
+            option(value="Ringo") Ringo
+            option(value="George") George
+            option(value="Scooby-Doo") Scooby-Doo
+        label(for="iceCream") likes ice cream:
+        input(type="checkbox" name="iceCream" value=form ? form.iceCreame : "")
+        input(type="submit" name="submit" value="Create Interesting User")

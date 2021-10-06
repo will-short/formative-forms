@@ -9,8 +9,9 @@ html
       }
 
   body
-      ul
-        li: a(href="/") root
-        li: a(href="/create") create
-        li: a(href="/create-interesting") interesting
+      nav
+        a(href="/") root
+        a(href="/create") create
+        a(href="/create-interesting") interesting
   block content
+  block create-form
