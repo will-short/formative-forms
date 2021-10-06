@@ -1,4 +1,7 @@
 extends layout.pug
+mixin option(...names)
+    each name in names
+        option(value=name selected=form ? form.favoriteBeatle === name ? "selected": false : false)=name
 block content
     include includes/errors.pug
     form(action="/create-interesting" method="post")
@@ -8,14 +11,7 @@ block content
         label(for="favoriteBeatle") Favorite Beatle:
         select(name="favoriteBeatle")
             option(value="") --Please choose an option--
-            option(value="John" selected=form ? form.favoriteBeatle === "John" ? "selected": false : false) John
-            option(value="Paul" selected=form ? form.favoriteBeatle === "Paul" ? "selected": false : false) Paul
-            option(value="Ringo" selected=form ? form.favoriteBeatle === "Ringo" ? "selected": false : false) Ringo
-            option(value="George" selected=form ? form.favoriteBeatle === "George" ? "selected": false : false) George
-            option(value="Scooby-Doo" selected=form ? form.favoriteBeatle === "Scooby-Doo" ? "selected": false : false) Scooby-Doo
+            +option("John", "Paul", "Ringo", "George", "Scooby-Doo")
         label(for="iceCream") likes ice cream:
-        if form
-            input(type="checkbox" name="iceCream" checked=form.iceCream)
-        else
-            input(type="checkbox" name="iceCream" )
+        input(type="checkbox" name="iceCream" checked=form ? form.iceCream === "on" ? true: false : false)
         input(type="submit" name="submit" value="Create Interesting User")
