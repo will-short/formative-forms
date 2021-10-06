@@ -6,13 +6,16 @@ block content
         label(for="age") Age:
         input(type="number" name="age" value=form ? form.age : "")
         label(for="favoriteBeatle") Favorite Beatle:
-        select(name="favoriteBeatle" value=form ? form.favoriteBeatle : "")
+        select(name="favoriteBeatle")
             option(value="") --Please choose an option--
-            option(value="John") John
-            option(value="Paul") Paul
-            option(value="Ringo") Ringo
-            option(value="George") George
-            option(value="Scooby-Doo") Scooby-Doo
+            option(value="John" selected=form ? form.favoriteBeatle === "John" ? "selected": false : false) John
+            option(value="Paul" selected=form ? form.favoriteBeatle === "Paul" ? "selected": false : false) Paul
+            option(value="Ringo" selected=form ? form.favoriteBeatle === "Ringo" ? "selected": false : false) Ringo
+            option(value="George" selected=form ? form.favoriteBeatle === "George" ? "selected": false : false) George
+            option(value="Scooby-Doo" selected=form ? form.favoriteBeatle === "Scooby-Doo" ? "selected": false : false) Scooby-Doo
         label(for="iceCream") likes ice cream:
-        input(type="checkbox" name="iceCream" value=form ? form.iceCreame : "")
+        if form
+            input(type="checkbox" name="iceCream" checked=form.iceCream)
+        else
+            input(type="checkbox" name="iceCream" )
         input(type="submit" name="submit" value="Create Interesting User")

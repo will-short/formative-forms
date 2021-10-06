@@ -69,20 +69,36 @@ app.post("/create-interesting", csrfProtection, (req, res) => {
   if (!form.firstName) errors.push("Please provide a first name.");
   if (!form.lastName) errors.push("Please provide a last name.");
   if (!form.email) errors.push("Please provide an email.");
-  if (!form.password) errors.push("Please provide a password.");
+
   if (!form.password) errors.push("Please provide a password.");
   if (form.password !== form.confirmedPassword)
     errors.push(
       "The provided values for the password and password confirmation fields did not match."
     );
+  if (!form.age) {
+    errors.push("age is required");
+  } else if (!Number(form.age) || form.age > 120 || form.age < 0) {
+    errors.push("age must be a valid age");
+  }
+
+  if (!form.favoriteBeatle) errors.push("favoriteBeatle is required");
+  if (form.favoriteBeatle === "Scooby-Doo")
+    errors.push("favoriteBeatle must be a real Beatle member");
   if (errors.length)
-    res.render("create", { csrfToken: req.csrfToken(), errors, form });
+    res.render("create-interesting", {
+      csrfToken: req.csrfToken(),
+      errors,
+      form,
+    });
   else {
     users.push({
       id: users.length + 1,
       firstName: form.firstName,
       lastName: form.lastName,
       email: form.email,
+      age: form.age,
+      favoriteBeatle: form.favoriteBeatle,
+      iceCream: (form.iceCream = "on" ? true : false),
     });
     res.redirect("/");
   }
